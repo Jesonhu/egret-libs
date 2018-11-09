@@ -69,6 +69,8 @@ namespace libs {
       }
 
       // 范围控制 start ===============
+      // TIPS:
+      // 游戏UI结构: 右侧是按钮工具组, 组里是不能拖拽的, 可以根据实际需要调整
       /** 当前游戏项目按钮组宽度 */
       const btnGroupWith = (new BtnsGroup()).width;
 
