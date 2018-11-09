@@ -5,7 +5,7 @@
  */
 namespace libs {
   /**
-   * 拖拽移动矩形管理类.
+   * 拖拽移动管理类.
    * 
    * @description 此拖拽管理类适用于: 拖拽对象，对象跟着对应移动.
    * @extends egret.EventDispatcher 
@@ -31,6 +31,16 @@ namespace libs {
     private _stageWidth: number
     /** 舞台高 */
     private _stageHeight: number
+
+    /** 左侧排除的宽度 */
+    private _excludeLeftWidth: number = 0
+    /** 右侧排除的宽度 */
+    private _excludeRightWidth: number = 0
+    /** 顶部排除的高度 */
+    private _excludeTopHeight: number = 0
+    /** 底部排除的高度 */
+    private _excludeBottomHeight: number = 0
+
     
     /** 名字 */
     public name: string
@@ -42,6 +52,7 @@ namespace libs {
      * @param {object} stage       当前对象所在的舞台
      * @param {egret.Rectangle}    拖拽限制矩形区域
      */
+    // constructor(display: egret.DisplayObject, stage: any, bounds?: egret.Rectangle) {
     constructor(display: any, stage: eui.Component, bounds?: egret.Rectangle) {
       super();
       
@@ -68,17 +79,18 @@ namespace libs {
       }
 
       // 范围控制 start ===============
-      // TIPS:
-      // 游戏UI结构: 右侧是按钮工具组, 组里是不能拖拽的, 可以根据实际需要调整
       /** 当前游戏项目按钮组宽度 */
-      const btnGroupWith = (new BtnsGroup()).width;
+      // const btnGroupWith = (new BtnsGroup()).width;
+      this._excludeRightWidth = (new BtnsGroup()).width;
 
       /**
        * 游戏范围.
        * 
-       * 在当前项目中，右侧是按钮组，是不能拖拽到按钮组下面的 
+       * 可以拖拽的矩形范围.
        */
-      const gameRectangle = new egret.Rectangle(0, 0, this._stageWidth - btnGroupWith, this._stageHeight);
+      const gameRectangleWidth: number = this._stageWidth - this._excludeLeftWidth - this._excludeRightWidth;
+      const gameRectangleHeight: number = this._stageHeight - this._excludeTopHeight - this._excludeBottomHeight;
+      const gameRectangle = new egret.Rectangle(0, 0, gameRectangleWidth, this._stageHeight);
       this._bounds = bounds ? bounds : gameRectangle;
       // 范围控制 end ===============      
     }
@@ -255,17 +267,5 @@ namespace libs {
     public toString(): string {
       return this.CLASS_NAME; 
     }
-  }
-
-  /**
-   * 拖拽事件类. 
-   */
-  export class DragEvent {
-    /** 开始拖拽 */
-    public static DRAG_START: string = 'dragsSart';
-    /** 移动拖拽 */
-		public static DRAG_MOVE: string  = 'dragMove';
-    /** 停止拖拽 */
-		public static DRAG_STOP: string  = 'dragStop';
   }
 }
