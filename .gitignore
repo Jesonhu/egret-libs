@@ -1,0 +1,7 @@
+## Ignore the folder
+node_modules
+bin-debug
+bin-release
+
+## Ignore the file
+Thumbs.db
