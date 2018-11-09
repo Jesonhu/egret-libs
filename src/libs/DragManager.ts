@@ -42,7 +42,6 @@ namespace libs {
      * @param {object} stage       当前对象所在的舞台
      * @param {egret.Rectangle}    拖拽限制矩形区域
      */
-    // constructor(display: egret.DisplayObject, stage: any, bounds?: egret.Rectangle) {
     constructor(display: any, stage: eui.Component, bounds?: egret.Rectangle) {
       super();
       
