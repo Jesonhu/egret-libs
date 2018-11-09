@@ -5,12 +5,12 @@
  */
 namespace libs {
   /**
-   * 拖拽移动管理类.
+   * 矩形拖拽移动管理类.
    * 
    * @description 此拖拽管理类适用于: 拖拽对象，对象跟着对应移动.
    * @extends egret.EventDispatcher 
    */
-  export class DragManager extends egret.EventDispatcher implements egret.IEventDispatcher {
+  export class DragManager_rect extends egret.EventDispatcher implements egret.IEventDispatcher {
 
     public CLASS_NAME: string = 'DragManager'
 
