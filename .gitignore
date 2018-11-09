@@ -1,5 +1,4 @@
 ## Ignore the folder
-.wing
 node_modules
 bin-debug
 bin-release
