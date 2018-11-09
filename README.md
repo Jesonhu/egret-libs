@@ -5,3 +5,4 @@
 
 
 ## 参考资料
++ [Egret引擎的扩展封装类库（简称：白菜内裤）](https://github.com/d8q8/LcpLib_Egret)
