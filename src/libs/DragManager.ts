@@ -12,7 +12,7 @@ namespace libs {
    */
   export class DragManagerRect extends egret.EventDispatcher implements egret.IEventDispatcher {
 
-    public CLASS_NAME: string = 'DragManager'
+    public CLASS_NAME: string = 'DragManagerRect'
 
     /** 是否按下触摸状态 */
     private _isDrag: boolean = false
