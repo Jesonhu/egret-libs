@@ -1,7 +1,10 @@
 # 白鹭常用类库封装
 
-## 功能目录
+## 开发功能库目录
 + 拖拽管理类(拖拽位移)-DragManagerRect
+
+## 扩展命令
++ 本地跨域命令: egret crossdomain<sup>[详情](https://gitee.com/weblife/keep/issues/IOK6Z)</sup>
 
 
 ## 参考资料
