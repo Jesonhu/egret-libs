@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GameStageSkin" width="640" height="1040" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="1670c02fbfc" ></w:Config>
+	<e:Rect width="640" height="1040" x="0" y="0" fillColor="0xfcf7f7"/>
+	<e:Rect width="30" height="1040" x="610" y="0" fillColor="0xf90702" fillAlpha="0.5"/>
+	<e:Rect width="640" height="30" x="0" y="1010" fillColor="0xF90702" fillAlpha="0.5"/>
+	<e:Rect id="rect1" width="89" height="83" x="58" y="92" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Rect id="rect2" width="85" height="96" x="247" y="83" fillColor="0x055759" anchorOffsetX="0" anchorOffsetY="0"/>
+</e:Skin>

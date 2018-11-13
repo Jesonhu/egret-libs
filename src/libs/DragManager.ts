@@ -3,7 +3,7 @@
  * 
  * @update 2018/11/09.
  */
-namespace libs {
+namespace cTools_libs {
   /**
    * 拖拽移动管理类.
    * 
@@ -24,7 +24,7 @@ namespace libs {
     /** 全局坐标与当前显示对象的差值 */
     private _distance: egret.Point
     /** 当前舞台 */
-    private _stage: eui.Component
+    private _stage: any
     /** 矩形区域 */
     private _bounds: egret.Rectangle
     /** 舞台宽 */
@@ -52,8 +52,8 @@ namespace libs {
      * @param {object} stage       当前对象所在的舞台
      * @param {egret.Rectangle}    拖拽限制矩形区域
      */
-    // constructor(display: egret.DisplayObject, stage: any, bounds?: egret.Rectangle) {
-    constructor(display: any, stage: eui.Component, bounds?: egret.Rectangle) {
+    constructor(display: any, stage: any, bounds?: egret.Rectangle) {
+    // constructor(display: any, stage: eui.Component, bounds?: egret.Rectangle) {
       super();
       
       if (!display) return;
@@ -80,8 +80,8 @@ namespace libs {
 
       // 范围控制 start ===============
       /** 当前游戏项目按钮组宽度 */
-      // const btnGroupWith = (new BtnsGroup()).width;
-      this._excludeRightWidth = (new BtnsGroup()).width;
+      // this._excludeRightWidth = (new BtnsGroup()).width;
+      this._excludeRightWidth = 30;
 
       /**
        * 游戏范围.

@@ -1,4 +1,4 @@
-namespace libs {
+namespace cTools_libs {
 
   /**
    * 碰撞检测类.
