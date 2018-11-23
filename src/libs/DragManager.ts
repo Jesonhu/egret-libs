@@ -1,16 +1,15 @@
 /**
- * 功能集合
- * 
- * @update 2018/11/09.
+ * 功能集合.
  */
-namespace cTools_libs {
+namespace clibs {
   /**
    * 拖拽移动管理类.
    * 
    * @description 此拖拽管理类适用于: 拖拽对象，对象跟着对应移动.
-   * @extends egret.EventDispatcher 
+   * @extends egret.EventDispatcher
+   * @update 2018/11/09. 
    */
-  export class DragManagerRect extends egret.EventDispatcher implements egret.IEventDispatcher {
+  export class DragRectManager extends egret.EventDispatcher implements egret.IEventDispatcher {
 
     public CLASS_NAME: string = 'DragManagerRect'
 
@@ -80,8 +79,8 @@ namespace cTools_libs {
 
       // 范围控制 start ===============
       /** 当前游戏项目按钮组宽度 */
-      // this._excludeRightWidth = (new BtnsGroup()).width;
-      this._excludeRightWidth = 30;
+      this._excludeRightWidth = (new BtnsGroup()).width;
+      // this._excludeRightWidth = 30;
 
       /**
        * 游戏范围.

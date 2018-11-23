@@ -8,8 +8,8 @@ var __extends = this && this.__extends || function __extends(t, e) {
 for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
 r.prototype = e.prototype, t.prototype = new r();
 };
-var cTools_libs;
-(function (cTools_libs) {
+var clibs;
+(function (clibs) {
     /**
      * 碰撞检测类.
      *
@@ -43,24 +43,23 @@ var cTools_libs;
         };
         return CollisionManager;
     }());
-    cTools_libs.CollisionManager = CollisionManager;
-    __reflect(CollisionManager.prototype, "cTools_libs.CollisionManager");
-})(cTools_libs || (cTools_libs = {}));
+    clibs.CollisionManager = CollisionManager;
+    __reflect(CollisionManager.prototype, "clibs.CollisionManager");
+})(clibs || (clibs = {}));
 /**
- * 功能集合
- *
- * @update 2018/11/09.
+ * 功能集合.
  */
-var cTools_libs;
-(function (cTools_libs) {
+var clibs;
+(function (clibs) {
     /**
      * 拖拽移动管理类.
      *
      * @description 此拖拽管理类适用于: 拖拽对象，对象跟着对应移动.
      * @extends egret.EventDispatcher
+     * @update 2018/11/09.
      */
-    var DragManagerRect = (function (_super) {
-        __extends(DragManagerRect, _super);
+    var DragRectManager = (function (_super) {
+        __extends(DragRectManager, _super);
         /**
          * 构造函数.
          *
@@ -68,7 +67,7 @@ var cTools_libs;
          * @param {object} stage       当前对象所在的舞台
          * @param {egret.Rectangle}    拖拽限制矩形区域
          */
-        function DragManagerRect(display, stage, bounds) {
+        function DragRectManager(display, stage, bounds) {
             var _this = 
             // constructor(display: any, stage: eui.Component, bounds?: egret.Rectangle) {
             _super.call(this) || this;
@@ -105,8 +104,8 @@ var cTools_libs;
             }
             // 范围控制 start ===============
             /** 当前游戏项目按钮组宽度 */
-            // this._excludeRightWidth = (new BtnsGroup()).width;
-            _this._excludeRightWidth = 30;
+            _this._excludeRightWidth = (new BtnsGroup()).width;
+            // this._excludeRightWidth = 30;
             /**
              * 游戏范围.
              *
@@ -122,7 +121,7 @@ var cTools_libs;
         /**
          * 碰触到屏幕触发.
          */
-        DragManagerRect.prototype.onTouchDown = function (evt) {
+        DragRectManager.prototype.onTouchDown = function (evt) {
             // Notice: 拖拽对象必须是 `this._stage` 的子元素，否则会出错.
             // 拖拽对象设为最上层
             this._stage.setChildIndex(this._display, this._stage.numChildren - 1);
@@ -135,7 +134,7 @@ var cTools_libs;
             if (this._isDrag) {
                 this._stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.onTouchMove, this);
                 // 派发一个消息
-                this.dispatchEventWith(cTools_libs.DragEvent.DRAG_START);
+                this.dispatchEventWith(clibs.DragEvent.DRAG_START);
             }
         };
         /**
@@ -143,14 +142,14 @@ var cTools_libs;
          *
          * 拖拽对象随拖拽位移效果添加.
          */
-        DragManagerRect.prototype.onTouchMove = function (evt) {
+        DragRectManager.prototype.onTouchMove = function (evt) {
             if (!this._isDrag)
                 return;
             if (this._dispalyDown == this._display) {
                 this._display.x = evt.stageX - this._distance.x;
                 this._display.y = evt.stageY - this._distance.y;
                 this.checkBoundary(this._display, this._bounds);
-                this.dispatchEventWith(cTools_libs.DragEvent.DRAG_MOVE);
+                this.dispatchEventWith(clibs.DragEvent.DRAG_MOVE);
             }
         };
         /**
@@ -158,18 +157,18 @@ var cTools_libs;
          *
          * 包括:手指抬起, 滑动超过范围
          */
-        DragManagerRect.prototype.onTouchUp = function (evt) {
+        DragRectManager.prototype.onTouchUp = function (evt) {
             if (this._display && this._dispalyDown == this._display) {
                 this._isDrag = false;
                 this._stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.onTouchMove, this);
                 this._stage.removeEventListener(egret.Event.LEAVE_STAGE, this.onTouchUp, this);
-                this.dispatchEventWith(cTools_libs.DragEvent.DRAG_STOP);
+                this.dispatchEventWith(clibs.DragEvent.DRAG_STOP);
             }
         };
         /**
          * 增加所有事件监听.
          */
-        DragManagerRect.prototype.addEventListeners = function () {
+        DragRectManager.prototype.addEventListeners = function () {
             this._display.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTouchDown, this);
             this._display.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.onTouchMove, this);
             this._display.addEventListener(egret.TouchEvent.TOUCH_END, this.onTouchUp, this);
@@ -178,7 +177,7 @@ var cTools_libs;
         /**
          * 移除所有事件监听.
          */
-        DragManagerRect.prototype.removeEventListeners = function () {
+        DragRectManager.prototype.removeEventListeners = function () {
             if (this._display.hasEventListener(egret.TouchEvent.TOUCH_BEGIN)) {
                 this._display.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTouchDown, this);
             }
@@ -197,7 +196,7 @@ var cTools_libs;
          *
          * 移除之后也可以恢复拖拽效果，并且不需要再次实例化.
          */
-        DragManagerRect.prototype.removeDrag = function () {
+        DragRectManager.prototype.removeDrag = function () {
             this.removeEventListeners();
         };
         /**
@@ -205,7 +204,7 @@ var cTools_libs;
          *
          * 只适用于 `移除拖拽效果` 后的恢复.
          */
-        DragManagerRect.prototype.restoreDrag = function () {
+        DragRectManager.prototype.restoreDrag = function () {
             this.addEventListeners();
         };
         /**
@@ -216,7 +215,7 @@ var cTools_libs;
          * @param {egret.DisplayObject}  display 拖拽原生对象.
          * @param {egret.Rectangle}      bounds  范围矩形
          */
-        DragManagerRect.prototype.checkBoundary = function (display, bounds) {
+        DragRectManager.prototype.checkBoundary = function (display, bounds) {
             // 右边界限制
             if (display.x >= (bounds.width - display.width))
                 display.x = bounds.width - display.width;
@@ -230,7 +229,7 @@ var cTools_libs;
             if (display.y <= bounds.y)
                 display.y = bounds.y;
         };
-        Object.defineProperty(DragManagerRect.prototype, "dragDisplay", {
+        Object.defineProperty(DragRectManager.prototype, "dragDisplay", {
             /**
              * 获取拖拽`原生对象`.
              *
@@ -242,7 +241,7 @@ var cTools_libs;
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(DragManagerRect.prototype, "isDrag", {
+        Object.defineProperty(DragRectManager.prototype, "isDrag", {
             /**
              * 拖拽状态获取.
              */
@@ -263,7 +262,7 @@ var cTools_libs;
         /**
          * 从舞台移除拖拽原生对象.
          */
-        DragManagerRect.prototype.remove = function () {
+        DragRectManager.prototype.remove = function () {
             if (this._stage && this._display) {
                 this._stage.removeChild(this._display);
             }
@@ -273,29 +272,24 @@ var cTools_libs;
          *
          * @return {string} 拖拽类的名字
          */
-        DragManagerRect.prototype.toString = function () {
+        DragRectManager.prototype.toString = function () {
             return this.CLASS_NAME;
         };
-        return DragManagerRect;
+        return DragRectManager;
     }(egret.EventDispatcher));
-    cTools_libs.DragManagerRect = DragManagerRect;
-    __reflect(DragManagerRect.prototype, "cTools_libs.DragManagerRect", ["egret.IEventDispatcher"]);
-})(cTools_libs || (cTools_libs = {}));
-/**
- * 功能集合
- */
-var cTools_libs;
-(function (cTools_libs) {
-    /** ===========================================================
-     * 类名不为 EventType.
-     * @update 2018/11/09.
-     *  ===========================================================
-     */
+    clibs.DragRectManager = DragRectManager;
+    __reflect(DragRectManager.prototype, "clibs.DragRectManager", ["egret.IEventDispatcher"]);
+})(clibs || (clibs = {}));
+var clibs;
+(function (clibs) {
     /**
-     * 拖拽事件类类型(名称).
+     * 拖拽相关事件.
+     * @update 2018/11/09.
      */
-    var DragEvent = (function () {
+    var DragEvent = (function (_super) {
+        __extends(DragEvent, _super);
         function DragEvent() {
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         /** 开始拖拽 */
         DragEvent.DRAG_START = 'dragsSart';
@@ -304,7 +298,7 @@ var cTools_libs;
         /** 停止拖拽 */
         DragEvent.DRAG_STOP = 'dragStop';
         return DragEvent;
-    }());
-    cTools_libs.DragEvent = DragEvent;
-    __reflect(DragEvent.prototype, "cTools_libs.DragEvent");
-})(cTools_libs || (cTools_libs = {}));
+    }(egret.Event));
+    clibs.DragEvent = DragEvent;
+    __reflect(DragEvent.prototype, "clibs.DragEvent");
+})(clibs || (clibs = {}));

@@ -1,21 +1,12 @@
-/**
- * 功能集合
- */
-namespace cTools_libs {
-  
-  /** ===========================================================
-   * 类名不为 EventType.
-   * @update 2018/11/09.
-   *  ===========================================================
-   */
-
+namespace clibs {
 
   /**
-   * 拖拽事件类类型(名称).
+   * 拖拽相关事件.
+   * @update 2018/11/09.
    */
-  export class DragEvent {
+  export class DragEvent extends egret.Event {
     /** 开始拖拽 */
-    public static DRAG_START: string = 'dragsSart';
+    public static DRAG_START: string = 'dragsSart';  
     /** 移动拖拽 */
 		public static DRAG_MOVE: string  = 'dragMove';
     /** 停止拖拽 */

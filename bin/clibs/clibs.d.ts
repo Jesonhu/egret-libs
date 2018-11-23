@@ -1,4 +1,4 @@
-declare namespace cTools_libs {
+declare namespace clibs {
     /**
      * 碰撞检测类.
      *
@@ -19,18 +19,17 @@ declare namespace cTools_libs {
     }
 }
 /**
- * 功能集合
- *
- * @update 2018/11/09.
+ * 功能集合.
  */
-declare namespace cTools_libs {
+declare namespace clibs {
     /**
      * 拖拽移动管理类.
      *
      * @description 此拖拽管理类适用于: 拖拽对象，对象跟着对应移动.
      * @extends egret.EventDispatcher
+     * @update 2018/11/09.
      */
-    class DragManagerRect extends egret.EventDispatcher implements egret.IEventDispatcher {
+    class DragRectManager extends egret.EventDispatcher implements egret.IEventDispatcher {
         CLASS_NAME: string;
         /** 是否按下触摸状态 */
         private _isDrag;
@@ -138,19 +137,12 @@ declare namespace cTools_libs {
         toString(): string;
     }
 }
-/**
- * 功能集合
- */
-declare namespace cTools_libs {
-    /** ===========================================================
-     * 类名不为 EventType.
-     * @update 2018/11/09.
-     *  ===========================================================
-     */
+declare namespace clibs {
     /**
-     * 拖拽事件类类型(名称).
+     * 拖拽相关事件.
+     * @update 2018/11/09.
      */
-    class DragEvent {
+    class DragEvent extends egret.Event {
         /** 开始拖拽 */
         static DRAG_START: string;
         /** 移动拖拽 */

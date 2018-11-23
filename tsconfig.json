@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "es5",
-        "outFile": "bin/cTools_libs/cTools_libs.js",
+        "outFile": "bin/clibs/clibs.js",
         "sourceMap": false,
         "experimentalDecorators": true,
         "lib": [
@@ -13,7 +13,9 @@
         "types": []
     },
     "include": [
-        "libs",
-        "src/libs"
+        "libs/egret.d.ts",
+        "libs/game.d.ts",
+        "libs/tween.d.ts",
+        "src"
     ]
 }
