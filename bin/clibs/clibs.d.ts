@@ -1,5 +1,31 @@
 declare namespace clibs {
     /**
+     * 组件基类.
+     *
+     * @updte 2018/11/28
+     */
+    class BaseComponent extends eui.Component implements eui.UIComponent {
+        /**
+         * 组件基类.
+         */
+        constructor();
+        protected partAdded(partName: string, instance: any): void;
+        protected childrenCreated(): void;
+        /** 初始化 */
+        protected init(): void;
+        /** 初始化数据 */
+        protected initData(): void;
+        /** 重置数据 */
+        protected resetData(): void;
+        /** 是否激活过了标记 */
+        protected _isActived: boolean;
+        /** 正确操作的对象标记 */
+        protected _isRight: boolean;
+        isRight: boolean;
+    }
+}
+declare namespace clibs {
+    /**
      * 碰撞检测类.
      *
      * @create 2018/11/9
@@ -151,28 +177,76 @@ declare namespace clibs {
         static DRAG_STOP: string;
     }
 }
-/**
- * 组件基类.
- *
- * @updte 2018/11/28
- */
-declare class BaseComponent extends eui.Component implements eui.UIComponent {
+declare namespace clibs {
     /**
-     * 组件基类.
+     * 图片资源切换控件.
+     *
+     * @update 2018/11/28
+     *
+     * @extends eui.Image
+     * @desc
+     * 初始数据设置:
+     * 1. 如果是期望图片切换的对象，需设置 `isRight = true`，并设置激活时候的图片资源 `activedSource`;
+     *    默认 `isRight = false` 不需要设置激活时候的图片资源
+     * 2. 如果是期望图片切换的对象，且在切换时需要改变位置，需要设置 `isActivedMove = true`,
+     *    并设置 `activeMovePointX` 和 `activeMovePointY`; 默认 `isActivedMove = false`
+     *
+     * 初始必须调用的方法：init();
+     * @example
      */
-    constructor();
-    protected partAdded(partName: string, instance: any): void;
-    protected childrenCreated(): void;
-    /** 初始化 */
-    protected init(): void;
-    /** 初始化数据 */
-    protected initData(): void;
-    /** 重置数据 */
-    protected resetData(): void;
-    /** 是否激活过了标记 */
-    protected _isActived: boolean;
-    isActived: boolean;
-    /** 正确操作的对象标记 */
-    protected _isRight: boolean;
-    isRight: boolean;
+    class ImageChange extends eui.Image {
+        /**
+         * 图片资源切换控件.
+         *
+         * 正确的对象点击，才行进行图片资源切换.
+         */
+        constructor();
+        createChildren(): void;
+        /**
+         * 初始化.
+         */
+        init(): void;
+        private initData();
+        /** 初始位置坐标 */
+        private initPoint;
+        /** 需要移动的位置坐标 */
+        private movePoint;
+        /** 激活的时候是否需要移动位置 */
+        private _isActivedMove;
+        isActivedMove: boolean;
+        activeMovePointX: number;
+        activeMovePointY: number;
+        /** 是否激活过了标记 */
+        protected _isActived: boolean;
+        /** 正确操作的对象标记 */
+        protected _isRight: boolean;
+        isRight: boolean;
+        /** 默认显示的图片路径 */
+        private _defaultSource;
+        /** 激活后显示的图片路径 */
+        private _activedSource;
+        /**
+         * 激活后显示的图片设置.
+         */
+        activedSource: string | egret.Texture;
+        /**
+         * 添加事件处理
+         */
+        addEventHandle(): void;
+        /**
+         * 重置数据.
+         */
+        resetData(): void;
+        /**
+         * 移除事件处理.
+         */
+        removeEventHandle(): void;
+        private onTap();
+    }
+    class ImageChangeEvent {
+        /** 点击了 */
+        static TAP: string;
+    }
+}
+declare namespace clibs {
 }

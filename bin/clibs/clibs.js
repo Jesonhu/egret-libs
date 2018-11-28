@@ -11,6 +11,63 @@ r.prototype = e.prototype, t.prototype = new r();
 var clibs;
 (function (clibs) {
     /**
+     * 组件基类.
+     *
+     * @updte 2018/11/28
+     */
+    var BaseComponent = (function (_super) {
+        __extends(BaseComponent, _super);
+        /**
+         * 组件基类.
+         */
+        function BaseComponent() {
+            var _this = _super.call(this) || this;
+            /** 是否激活过了标记 */
+            _this._isActived = false;
+            // public get isActived() {
+            // 	return this._isActived
+            // }
+            // public set isActived(value: boolean) {
+            // 	this._isActived = value;
+            // }
+            /** 正确操作的对象标记 */
+            _this._isRight = false;
+            return _this;
+        }
+        BaseComponent.prototype.partAdded = function (partName, instance) {
+            _super.prototype.partAdded.call(this, partName, instance);
+        };
+        BaseComponent.prototype.childrenCreated = function () {
+            _super.prototype.childrenCreated.call(this);
+            this.init();
+        };
+        /** 初始化 */
+        BaseComponent.prototype.init = function () {
+        };
+        /** 初始化数据 */
+        BaseComponent.prototype.initData = function () {
+        };
+        /** 重置数据 */
+        BaseComponent.prototype.resetData = function () {
+        };
+        Object.defineProperty(BaseComponent.prototype, "isRight", {
+            get: function () {
+                return this._isRight;
+            },
+            set: function (value) {
+                this._isRight = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return BaseComponent;
+    }(eui.Component));
+    clibs.BaseComponent = BaseComponent;
+    __reflect(BaseComponent.prototype, "clibs.BaseComponent", ["eui.UIComponent"]);
+})(clibs || (clibs = {}));
+var clibs;
+(function (clibs) {
+    /**
      * 碰撞检测类.
      *
      * @create 2018/11/9
@@ -302,60 +359,247 @@ var clibs;
     clibs.DragEvent = DragEvent;
     __reflect(DragEvent.prototype, "clibs.DragEvent");
 })(clibs || (clibs = {}));
-/**
- * 组件基类.
- *
- * @updte 2018/11/28
- */
-var BaseComponent = (function (_super) {
-    __extends(BaseComponent, _super);
+var clibs;
+(function (clibs) {
     /**
-     * 组件基类.
+     * 图片资源切换控件.
+     *
+     * @update 2018/11/28
+     *
+     * @extends eui.Image
+     * @desc
+     * 初始数据设置:
+     * 1. 如果是期望图片切换的对象，需设置 `isRight = true`，并设置激活时候的图片资源 `activedSource`;
+     *    默认 `isRight = false` 不需要设置激活时候的图片资源
+     * 2. 如果是期望图片切换的对象，且在切换时需要改变位置，需要设置 `isActivedMove = true`,
+     *    并设置 `activeMovePointX` 和 `activeMovePointY`; 默认 `isActivedMove = false`
+     *
+     * 初始必须调用的方法：init();
+     * @example
      */
-    function BaseComponent() {
-        var _this = _super.call(this) || this;
-        /** 是否激活过了标记 */
-        _this._isActived = false;
-        /** 正确操作的对象标记 */
-        _this._isRight = false;
-        return _this;
-    }
-    BaseComponent.prototype.partAdded = function (partName, instance) {
-        _super.prototype.partAdded.call(this, partName, instance);
-    };
-    BaseComponent.prototype.childrenCreated = function () {
-        _super.prototype.childrenCreated.call(this);
-        this.init();
-    };
-    /** 初始化 */
-    BaseComponent.prototype.init = function () {
-    };
-    /** 初始化数据 */
-    BaseComponent.prototype.initData = function () {
-    };
-    /** 重置数据 */
-    BaseComponent.prototype.resetData = function () {
-    };
-    Object.defineProperty(BaseComponent.prototype, "isActived", {
-        get: function () {
-            return this._isActived;
-        },
-        set: function (value) {
-            this._isActived = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseComponent.prototype, "isRight", {
-        get: function () {
-            return this._isRight;
-        },
-        set: function (value) {
-            this._isRight = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return BaseComponent;
-}(eui.Component));
-__reflect(BaseComponent.prototype, "BaseComponent", ["eui.UIComponent"]);
+    var ImageChange = (function (_super) {
+        __extends(ImageChange, _super);
+        /**
+         * 图片资源切换控件.
+         *
+         * 正确的对象点击，才行进行图片资源切换.
+         */
+        function ImageChange() {
+            var _this = _super.call(this) || this;
+            /** 需要移动的位置坐标 */
+            _this.movePoint = new egret.Point(0, 0);
+            /** 激活的时候是否需要移动位置 */
+            _this._isActivedMove = false;
+            _this.activeMovePointX = 0;
+            _this.activeMovePointY = 0;
+            /** 是否激活过了标记 */
+            _this._isActived = false;
+            // public get isActived() {
+            // 	return this._isActived;
+            // }
+            // public set isActived(value: boolean) {
+            // 	this._isActived = value;
+            // }
+            /** 正确操作的对象标记 */
+            _this._isRight = false;
+            /** 默认显示的图片路径 */
+            _this._defaultSource = '';
+            /** 激活后显示的图片路径 */
+            _this._activedSource = '';
+            return _this;
+        }
+        ImageChange.prototype.createChildren = function () {
+            _super.prototype.createChildren.call(this);
+        };
+        /**
+         * 初始化.
+         */
+        ImageChange.prototype.init = function () {
+            this.initData();
+            this.addEventHandle();
+        };
+        ImageChange.prototype.initData = function () {
+            this._defaultSource = this.source;
+            if (this._isActivedMove) {
+                this.initPoint = new egret.Point(this.x, this.y);
+                this.movePoint = new egret.Point(this.activeMovePointX, this.activeMovePointY);
+            }
+        };
+        Object.defineProperty(ImageChange.prototype, "isActivedMove", {
+            set: function (value) {
+                this._isActivedMove = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ImageChange.prototype, "isRight", {
+            get: function () {
+                return this._isRight;
+            },
+            set: function (value) {
+                this._isRight = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ImageChange.prototype, "activedSource", {
+            /**
+             * 激活后显示的图片设置.
+             */
+            set: function (source) {
+                var _source = source ? source : '';
+                this._activedSource = _source;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * 添加事件处理
+         */
+        ImageChange.prototype.addEventHandle = function () {
+            if (this.hasEventListener(egret.TouchEvent.TOUCH_TAP))
+                return;
+            this.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
+        };
+        /**
+         * 重置数据.
+         */
+        ImageChange.prototype.resetData = function () {
+            this._isActived = false;
+            if (this._isRight) {
+                this.source = this._defaultSource;
+            }
+            this.source = this._defaultSource;
+            if (this._isActivedMove) {
+                this.x = this.initPoint.x;
+                this.y = this.initPoint.y;
+            }
+        };
+        /**
+         * 移除事件处理.
+         */
+        ImageChange.prototype.removeEventHandle = function () {
+            if (this.hasEventListener(egret.TouchEvent.TOUCH_TAP)) {
+                this.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
+            }
+        };
+        ImageChange.prototype.onTap = function () {
+            var _isRight = this._isRight;
+            // 是正确的对象
+            if (_isRight) {
+                // 已经激活过
+                if (this._isActived)
+                    return;
+                // 设置为激活过状态.
+                this._isActived = true;
+                // 切换图片资源
+                this.source = this._activedSource;
+                if (this._isActivedMove) {
+                    this.x = this.movePoint.x;
+                    this.y = this.movePoint.y;
+                }
+            }
+            this.dispatchEventWith(ImageChangeEvent.TAP);
+        };
+        return ImageChange;
+    }(eui.Image));
+    clibs.ImageChange = ImageChange;
+    __reflect(ImageChange.prototype, "clibs.ImageChange");
+    var ImageChangeEvent = (function () {
+        function ImageChangeEvent() {
+        }
+        /** 点击了 */
+        ImageChangeEvent.TAP = 'TAP';
+        return ImageChangeEvent;
+    }());
+    clibs.ImageChangeEvent = ImageChangeEvent;
+    __reflect(ImageChangeEvent.prototype, "clibs.ImageChangeEvent");
+})(clibs || (clibs = {}));
+var clibs;
+(function (clibs) {
+    /**
+     * 图片切换组件.
+     *
+     * @update 2018/11/28
+     *
+     * @example
+     */
+    var ImageChangeComponent = (function (_super) {
+        __extends(ImageChangeComponent, _super);
+        /**
+         * 图片切换.
+         *
+         * 正确的对象点击，才行进行图片切换.
+         */
+        function ImageChangeComponent() {
+            var _this = _super.call(this) || this;
+            /** 默认显示的图片路径 */
+            _this._defaultSource = '';
+            /** 激活后显示的图片路径 */
+            _this._activedSource = '';
+            return _this;
+        }
+        ImageChangeComponent.prototype.init = function () {
+            this.addEventHandle();
+        };
+        Object.defineProperty(ImageChangeComponent.prototype, "defaultSource", {
+            /**
+             * 默认显示的图片设置.
+             */
+            set: function (source) {
+                var _source = source ? source : '';
+                console.log('图片', this.img);
+                this.img.source = _source;
+                this._defaultSource = _source;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ImageChangeComponent.prototype, "activedSource", {
+            /**
+             * 激活后显示的图片设置.
+             */
+            set: function (source) {
+                var _source = source ? source : '';
+                this._activedSource = _source;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * 添加事件处理
+         */
+        ImageChangeComponent.prototype.addEventHandle = function () {
+            if (this.hasEventListener(egret.TouchEvent.TOUCH_TAP))
+                return;
+            this.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
+        };
+        /**
+         * 重置数据.
+         */
+        ImageChangeComponent.prototype.resetData = function () {
+            this.img.source = this._defaultSource;
+            this._isActived = false;
+        };
+        /**
+         * 移除事件处理.
+         */
+        ImageChangeComponent.prototype.removeEventHandle = function () {
+            if (this.hasEventListener(egret.TouchEvent.TOUCH_TAP)) {
+                this.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
+            }
+        };
+        ImageChangeComponent.prototype.onTap = function () {
+            var _isRight = this._isRight;
+            // 是正确的对象
+            if (_isRight) {
+                this.img.source = this._activedSource;
+                // 设置为激活过状态.
+                this._isActived = true;
+            }
+            this.dispatchEventWith(clibs.ImageChangeEvent.TAP);
+        };
+        return ImageChangeComponent;
+    }(clibs.BaseComponent));
+    __reflect(ImageChangeComponent.prototype, "ImageChangeComponent");
+})(clibs || (clibs = {}));
