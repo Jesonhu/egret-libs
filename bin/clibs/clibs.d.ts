@@ -151,3 +151,28 @@ declare namespace clibs {
         static DRAG_STOP: string;
     }
 }
+/**
+ * 组件基类.
+ *
+ * @updte 2018/11/28
+ */
+declare class BaseComponent extends eui.Component implements eui.UIComponent {
+    /**
+     * 组件基类.
+     */
+    constructor();
+    protected partAdded(partName: string, instance: any): void;
+    protected childrenCreated(): void;
+    /** 初始化 */
+    protected init(): void;
+    /** 初始化数据 */
+    protected initData(): void;
+    /** 重置数据 */
+    protected resetData(): void;
+    /** 是否激活过了标记 */
+    protected _isActived: boolean;
+    isActived: boolean;
+    /** 正确操作的对象标记 */
+    protected _isRight: boolean;
+    isRight: boolean;
+}

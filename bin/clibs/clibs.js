@@ -302,3 +302,60 @@ var clibs;
     clibs.DragEvent = DragEvent;
     __reflect(DragEvent.prototype, "clibs.DragEvent");
 })(clibs || (clibs = {}));
+/**
+ * 组件基类.
+ *
+ * @updte 2018/11/28
+ */
+var BaseComponent = (function (_super) {
+    __extends(BaseComponent, _super);
+    /**
+     * 组件基类.
+     */
+    function BaseComponent() {
+        var _this = _super.call(this) || this;
+        /** 是否激活过了标记 */
+        _this._isActived = false;
+        /** 正确操作的对象标记 */
+        _this._isRight = false;
+        return _this;
+    }
+    BaseComponent.prototype.partAdded = function (partName, instance) {
+        _super.prototype.partAdded.call(this, partName, instance);
+    };
+    BaseComponent.prototype.childrenCreated = function () {
+        _super.prototype.childrenCreated.call(this);
+        this.init();
+    };
+    /** 初始化 */
+    BaseComponent.prototype.init = function () {
+    };
+    /** 初始化数据 */
+    BaseComponent.prototype.initData = function () {
+    };
+    /** 重置数据 */
+    BaseComponent.prototype.resetData = function () {
+    };
+    Object.defineProperty(BaseComponent.prototype, "isActived", {
+        get: function () {
+            return this._isActived;
+        },
+        set: function (value) {
+            this._isActived = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseComponent.prototype, "isRight", {
+        get: function () {
+            return this._isRight;
+        },
+        set: function (value) {
+            this._isRight = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return BaseComponent;
+}(eui.Component));
+__reflect(BaseComponent.prototype, "BaseComponent", ["eui.UIComponent"]);
